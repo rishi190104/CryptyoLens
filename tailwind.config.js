@@ -9,6 +9,11 @@ export default {
     extend: {
       fontFamily:{
         signature: [ "Fontdiner Swanky" ],
+        crypto: ["Inter"],
+      },
+      backgroundImage: {
+        'hero-pattern': "url('./images/cryptobgnew.png')",
+       
       }
     },
   },

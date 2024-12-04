@@ -10,8 +10,9 @@ function App() {
 
   return (
     <>
-    <Header/>
+   
     <BrowserRouter>
+    <Header/>
     <Routes>
       <Route path='/' element={<HomePage/>}/>
       <Route path='/coins/:id' element={<CoinPage/>}/>
