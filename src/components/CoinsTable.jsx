@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCryptoContext } from "../context/CryptoContext";
-import { Pagination , ConfigProvider, Spin} from "antd";
+import { Pagination, ConfigProvider, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export function numberWithCommas(x) {
@@ -10,12 +10,11 @@ export function numberWithCommas(x) {
 const CoinsTable = () => {
   const { currency, symbol } = useCryptoContext();
   const [coin, setCoin] = useState([]);
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  
   const CoinList = async () => {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}`
@@ -25,21 +24,19 @@ const CoinsTable = () => {
     setCoin(data);
   };
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     CoinList();
-    setLoading(false)
+    setLoading(false);
   }, [currency]);
- 
 
   const HandleSearch = () => {
     return coin.filter((coin) => {
-      return coin.name.toLowerCase().includes(search) ||
-      coin.symbol.toLowerCase().includes(search)
-    })
-  }
- 
-
- 
+      return (
+        coin.name.toLowerCase().includes(search) ||
+        coin.symbol.toLowerCase().includes(search)
+      );
+    });
+  };
 
   return (
     <>
@@ -54,78 +51,106 @@ const CoinsTable = () => {
             id="search"
             value={search}
             onChange={(e) => {
-              setSearch(e.target.value)
-            } }
+              setSearch(e.target.value);
+            }}
             placeholder="Search For CryptoCurrency "
             className=" w-[70%] h-12 mx-10 px-6 border border-yellow-700 bg-transparent outline-none placeholder:text-gray-600"
           />
         </div>
         <div className=" flex justify-center items-center py-14 max-w-screen-xl mx-auto">
-       {loading ? (<Spin size="large"/>) : (
-          <table className="border border-white w-full">
-            <thead className="border border-white bg-yellow-800 text-black">
-              <tr className="border border-white" >
-                {["Coins", "Price", "24h Change", "Market Cap"].map((head) => {
-                  return <th key={head} 
-                  className=" p-4"
-                  >{head} </th>;
-                })}
-              </tr>
-            </thead>
-            <tbody >
-          {HandleSearch()
-              .slice((page - 1) * 10 ,(page - 1) * 10 + 10)
-              .map((coin) => {
- const profit = coin.price_change_percentage_24h > 0; 
-                return (
-                  <>
-                    <tr key={coin.id} 
-                    className="border cursor-pointer"
-                    onClick={() => navigate(`/coins/${coin.id}`)}
-                    >
-                      <td className="flex  items-center gap-x-5 p-5">
-                        <img src={coin.image} alt={coin.name} width={50} />
-                        {coin.name}
-                      </td>
-                      <td>{symbol}{numberWithCommas(coin.current_price.toFixed(2))}</td>
-                     
-                      <td
-                      style={{color: profit > 0 ? "rgb(14, 203, 129)" : "red"}}
-                      > {profit && "+"}{coin.price_change_percentage_24h.toFixed(2)}%</td>
-                      <td>{symbol}{numberWithCommas(coin.market_cap).toString().slice(0, -6)}M</td>
-                    </tr>
-                  </>
-                );
-              })}
-            </tbody>
-          </table>)}
+          {loading ? 
+            <Spin size="large" />
+           : (
+            <table className="border border-white w-full">
+              <thead className="border border-white bg-yellow-800 text-black">
+                <tr className="border border-white">
+                  {["Coins", "Price", "24h Change", "Market Cap"].map(
+                    (head) => {
+                      return (
+                        <th key={head} className=" p-4">
+                          {head}{" "}
+                        </th>
+                      );
+                    }
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {HandleSearch()
+                  .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                  .map((coin) => {
+                    const profit = coin.price_change_percentage_24h > 0;
+                    return (
+                      <>
+                        <tr
+                          key={coin.id}
+                          className="border cursor-pointer"
+                          onClick={() => navigate(`/coins/${coin.id}`)}
+                        >
+                          <td className="flex  items-center gap-x-5 p-5">
+                            <img src={coin.image} alt={coin.name} width={50} />
+                            {coin.name}
+                          </td>
+                          <td>
+                            {symbol}
+                            {numberWithCommas(coin.current_price.toFixed(2))}
+                          </td>
+
+                          <td
+                            style={{
+                              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                            }}
+                          >
+                            {" "}
+                            {profit && "+"}
+                            {coin.price_change_percentage_24h.toFixed(2)}%
+                          </td>
+                          <td>
+                            {symbol}
+                            {numberWithCommas(coin.market_cap)
+                              .toString()
+                              .slice(0, -6)}
+                            M
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })}
+              </tbody>
+            </table>
+          )}
         </div>
         <ConfigProvider
-  theme={{
-    components: {
-      Pagination: {
-        itemActiveBg: "#a16207",
-        itemBg: "#a16207",
-        colorTextDisabled: "#fff",
-        colorTextPlaceholder: "#fff",
-        colorPrimaryHover : "#fff",
-        colorPrimary: "#00000",
-        colorText: "#fff",
-       colorBorder : "#fff",
-       itemLinkBg : "#fff",
-      
+          theme={{
+            components: {
+              Pagination: {
+                itemActiveBg: "#a16207",
+                itemBg: "#a16207",
+                colorTextDisabled: "#fff",
+                colorTextPlaceholder: "#fff",
+                colorPrimaryHover: "#fff",
+                colorPrimary: "#00000",
+                colorText: "#fff",
+                colorBorder: "#fff",
+                itemLinkBg: "#fff",
+              },
+            },
+          }}
+        >
+          <Pagination
+            defaultCurrent={HandleSearch.length / 10}
+            total={100}
 
-       
-      },
-    },
-  }}
->
-          <Pagination defaultCurrent={HandleSearch.length / 10} total={100} responsive showSizeChanger={false} className="pb-10 flex justify-center items-center " 
-          onChange={(value) => {
-            setPage(value);
-            window.scroll(0, 450)
-            }}/>
-            </ConfigProvider>
+            responsive
+            showSizeChanger={false}
+            className="pb-10 flex justify-center items-center "
+            onChange={(value) => {
+              {HandleSearch()}
+              setPage(value);
+              window.scroll(0, 450);
+            }}
+          />
+        </ConfigProvider>
       </main>
     </>
   );
