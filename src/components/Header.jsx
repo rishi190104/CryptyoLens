@@ -3,6 +3,7 @@ import Title from "antd/es/typography/Title";
 import React, { useState } from "react";
 import { useCryptoContext } from "../context/CryptoContext";
 import {  useNavigate } from "react-router-dom";
+import AuthModal from "./Authentication/AuthModal";
 
 const Header = () => {
 
@@ -24,6 +25,10 @@ const Header = () => {
         selectorBg: "#a16207",
         activeOutlineColor: "#a16207",
         hoverBorderColor: "#a16207",
+        colorText: "#121212",
+        fontSizeIcon: 18,
+        fontSize: 18,
+        
         
       },
     },
@@ -39,12 +44,12 @@ const Header = () => {
             
           </Title>
         </div>
-        <div>
+        <div className="flex justify-center items-center gap-x-10">
           <Select
             value={currency} 
             onChange={handleOnchange}
           
-            className="w-24 h-10 rounded-none font-crypto outline-none"
+            className="w-24 h-10 rounded-none font-crypto "
             options={[
               {
                 value: "INR",
@@ -56,6 +61,7 @@ const Header = () => {
               },
             ]}
           />
+         <AuthModal/>
         </div>
       </div>
     </header>
