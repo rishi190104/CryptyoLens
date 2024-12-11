@@ -8,21 +8,12 @@ export function numberWithCommas(x) {
 }
 
 const CoinsTable = () => {
-  const { currency, symbol } = useCryptoContext();
-  const [coin, setCoin] = useState([]);
+  const {  symbol, coins, loading, setLoading, currency, CoinList } = useCryptoContext();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const CoinList = async () => {
-    const response = await fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}`
-    );
-    const data = await response.json();
-    console.log(data);
-    setCoin(data);
-  };
+  
   useEffect(() => {
     setLoading(true);
     CoinList();
@@ -30,7 +21,7 @@ const CoinsTable = () => {
   }, [currency]);
 
   const HandleSearch = () => {
-    return coin.filter((coin) => {
+    return coins.filter((coin) => {
       return (
         coin.name.toLowerCase().includes(search) ||
         coin.symbol.toLowerCase().includes(search)
@@ -141,7 +132,7 @@ const CoinsTable = () => {
             defaultCurrent={HandleSearch.length / 10}
             total={100}
 
-            responsive
+            responsive={true}
             showSizeChanger={false}
             className="pb-10 flex justify-center items-center "
             onChange={(value) => {
