@@ -143,7 +143,7 @@ const UserSideBar = () => {
           <div className="">
             {contextHolder}
             <button
-              className="absolute bottom-10 flex justify-center items-center hover:bg-yellow-500 md:w-[200px] md:ml-20 ml-10 py-2 px-10 rounded-sm
+              className="absolute md:bottom-10 bottom-5 flex justify-center items-center hover:bg-yellow-500 md:w-[200px] md:ml-20 ml-10 py-2 px-10 rounded-sm
              hover:text-black text-lg font-bold bg-transparent text-yellow-500 border-2 border-yellow-500"
               onClick={handleClick}
             >
