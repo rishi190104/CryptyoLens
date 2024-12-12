@@ -14,7 +14,7 @@ const CoinPage = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const { id } = useParams();
 
-  const { currency, symbol, user, watchlist} = useCryptoContext();
+  const { currency, symbol, user, watchlist } = useCryptoContext();
 
   const SingleCoin = async () => {
     const response = await fetch(
@@ -43,45 +43,47 @@ const CoinPage = () => {
     try {
       await setDoc(
         CoinRef,
-        {coins: watchlist ? [...watchlist, coin?.id] : [coin?.id]},
-        {merge: true}
-      )
+        { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] },
+        { merge: true }
+      );
       messageApi.open({
-        type:"success",
-        content: `${coin.name} Added to the Watchlist`
-      })
+        type: "success",
+        content: `${coin.name} Added to the Watchlist`,
+      });
     } catch (error) {
       messageApi.open({
-        type:"error",
-        content: error.message
-      })
+        type: "error",
+        content: error.message,
+      });
     }
-  }
+  };
 
-const removefromWatchlist = async() => {
-  const CoinRef = doc(db, "watchlist", user.uid);
-  try {
-    await setDoc(
-      CoinRef,
-      {coins: watchlist.filter((watch) => watch !== coin.id)},
-      {merge: true}
-    )
-    messageApi.open({
-      type:"success",
-      content: `${coin.name} Removed from the Watchlist`
-    })
-  } catch (error) {
-    messageApi.open({
-      type:"error",
-      content: error.message,
-    })
-  }
-}
+  const removefromWatchlist = async () => {
+    const CoinRef = doc(db, "watchlist", user.uid);
+    try {
+      await setDoc(
+        CoinRef,
+        { coins: watchlist.filter((watch) => watch !== coin.id) },
+        { merge: true }
+      );
+      messageApi.open({
+        type: "success",
+        content: `${coin.name} Removed from the Watchlist`,
+      });
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
+    }
+  };
 
   return (
     <>
       {loading ? (
-       <div><Spin/></div>
+        <div>
+          <Spin />
+        </div>
       ) : (
         <main className="w-full md:h-screen bg-black text-white md:flex py-10">
           <section className="md:w-[30%] h-full border-r-2 border-r-gray-300 flex flex-col justify-center p-5 gap-y-3">
@@ -115,19 +117,25 @@ const removefromWatchlist = async() => {
               <span className="text-xl">
                 {ReactHtmlParser(coin?.description?.en.split(". ")[0])}
               </span>
-              <div >
-              {contextHolder}
-               
-                {user &&  
-                <button className="bg-yellow-700"
-                onClick={isWatchlist ? removefromWatchlist : addtoWatchlist}
-                >{isWatchlist ? "Remove from Watchlist" : "Add to Watchlist"} </button>}
-               
+              <div>
+                {contextHolder}
+
+                {user && (
+                  <button
+                    className=" text-black px-7 py-3 font-bold rounded-sm w-full my-5 "
+                    style={{
+                      backgroundColor: isWatchlist ? "#ef4444" : "#eab308",
+                    }}
+                    onClick={isWatchlist ? removefromWatchlist : addtoWatchlist}
+                  >
+                    {isWatchlist ? "Remove from Watchlist" : "Add to Watchlist"}{" "}
+                  </button>
+                )}
               </div>
             </div>
           </section>
           <section className="sm:w-full md:w-[75%] p-7">
-            <CoinInfo coin={coin}/>
+            <CoinInfo coin={coin} />
           </section>
         </main>
       )}

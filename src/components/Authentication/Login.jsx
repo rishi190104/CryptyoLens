@@ -6,6 +6,7 @@ import { useCryptoContext } from "../../context/CryptoContext";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase";
 import { message } from "antd";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
 const Login = ({ handleCancel }) => {
   const [email, setEmail] = useState("");
@@ -13,10 +14,15 @@ const Login = ({ handleCancel }) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const { signup, setSignup, setLogin } = useCryptoContext();
+  const { signup, setSignup, setLogin, setShowpassword, showpassword } =
+    useCryptoContext();
 
   const onChange = (key) => {
     console.log(key);
+  };
+
+  const togglePassword = () => {
+    setShowpassword(!showpassword);
   };
 
   const handleClick = async () => {
@@ -48,7 +54,7 @@ const Login = ({ handleCancel }) => {
       key: "1",
       label: "Login",
       children: (
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 text-white">
           <InputBox
             type="email"
             placeholder="Email"
@@ -56,26 +62,32 @@ const Login = ({ handleCancel }) => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputBox
-            type="text"
+            type={showpassword ? "text" : "password"}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <span
+            onClick={togglePassword}
+            className="absolute top-12 right-4 cursor-pointer"
+          >
+            {showpassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          </span>
           {contextHolder}
           <Button type="primary" onClick={handleClick}>
             Login
           </Button>
-          <div className="text-white flex">
-            <p>New User?</p> &nbsp;
+          <div className="text-white flex justify-center items-center">
+            <p>New User?</p> &nbsp; &nbsp;
             <p
               onClick={() => {
                 setSignup(!signup);
 
                 setLogin(!login);
               }}
-              className="text-yellow-700 cursor-pointer font-bold"
+              className="text-yellow-500 cursor-pointer font-bold"
             >
-              Signup
+              SignUp
             </p>
           </div>
         </div>

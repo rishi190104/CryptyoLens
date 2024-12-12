@@ -15,6 +15,7 @@ const Context = ({ children }) => {
   const [watchlist, setWatchlist] = useState([]);
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showpassword, setShowpassword] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -75,6 +76,8 @@ const Context = ({ children }) => {
         loading,
         CoinList,
         setLoading,
+        setShowpassword,
+        showpassword,
       }}
     >
       {children}

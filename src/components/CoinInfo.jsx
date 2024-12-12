@@ -11,16 +11,14 @@ import {
   Filler,
 } from "chart.js";
 import { useCryptoContext } from "../context/CryptoContext";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { Spin, ConfigProvider } from "antd";
 
-const CoinInfo = ({ coin }) =>{
+const CoinInfo = ({ coin }) => {
   const [historicalData, setHistoricalData] = useState([]);
-  const [days, setDays] = useState(365);
+  const [days, setDays] = useState(1);
   const { currency } = useCryptoContext();
   const { id } = useParams();
-  // const chartRef = useRef(null);
-  // const btnRef = useRef(null)
 
   ChartJS.register(
     LineElement,
@@ -40,30 +38,27 @@ const CoinInfo = ({ coin }) =>{
     setHistoricalData(data.prices);
   };
 
-  console.log(historicalData);
-
   useEffect(() => {
     HistoricalChart();
-   
   }, [currency, days]);
 
   if (!historicalData.length)
     return (
       <div className="flex justify-center items-center">
         <ConfigProvider
-  theme={{
-    token: {
-      colorPrimary: "#a16207"
-    },
-  }}
->
- <Spin size="large" />
+          theme={{
+            token: {
+              colorPrimary: "#a16207",
+            },
+          }}
+        >
+          <Spin size="large" />
         </ConfigProvider>
       </div>
     );
 
   const chartData = {
-    labels: historicalData.map((point) =>{
+    labels: historicalData.map((point) => {
       const date = new Date(point[0]);
       const time =
         date.getHours() > 12
@@ -75,7 +70,7 @@ const CoinInfo = ({ coin }) =>{
       {
         data: historicalData.map((point) => point[1]),
         label: `Price (Past ${days} Days) in ${currency}`,
-        borderColor: "#a16207",
+        borderColor: "#eab308",
         fill: false,
         backgroundColor: "rgba(62, 149, 205, 0.2)",
         pointRadius: 1,
@@ -116,29 +111,31 @@ const CoinInfo = ({ coin }) =>{
       label: "1 Year",
       value: 365,
     },
-  ]
+  ];
 
   return (
     <>
-    <div>
-      <Line  data={chartData} options={chartOptions} />
-    </div>
-    <div className="flex justify-center items-center gap-x-4 pt-5">
-       {
-        chartDays.map(({id, value,label}) => (
-          <button key={id}
-          value={value}
-          onClick={() => {
-            setDays(value)}
-          }
-         
-          className="bg-yellow-700 text-black p-5 rounded-sm"
+      <div>
+        <Line data={chartData} options={chartOptions} />
+      </div>
+      <div className="flex justify-center items-center md:gap-x-6 gap-x-2 pt-5  ">
+        {chartDays.map(({ id, value, label }) => (
+          <button
+            key={id}
+            value={value}
+            className={`px-5 py-2 rounded-sm ${
+              days === value
+                ? "bg-transparent border-2 border-yellow-500 text-white"
+                : "bg-yellow-500 text-black"
+            }`}
+            onClick={() => {
+              setDays(value);
+            }}
           >
             {label}
           </button>
-        ) )
-       }
-    </div>
+        ))}
+      </div>
     </>
   );
 };

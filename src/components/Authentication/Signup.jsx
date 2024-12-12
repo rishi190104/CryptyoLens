@@ -4,16 +4,20 @@ import { Tabs, ConfigProvider } from "antd";
 import InputBox from "../InputBox";
 import { useCryptoContext } from "../../context/CryptoContext";
 import { message } from "antd";
-import {auth} from "../../Firebase"
+import { auth } from "../../Firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
-const Signup = ({handleCancel}) => {
+const Signup = ({ handleCancel }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassowrd] = useState("");
 
   const [messageApi, contextHolder] = message.useMessage();
-  
+
+  const togglePassword = () => {
+    setShowpassword(!showpassword);
+  };
 
   const handleClick = async () => {
     if (password !== confirmpassword) {
@@ -21,26 +25,31 @@ const Signup = ({handleCancel}) => {
         type: "error",
         content: `Passwords do not match`,
       });
-     return;
+      return;
     }
 
     try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        messageApi.open({
-            type: "success",
-            content: `Signup successful, Welcome ${result.user.email} `,
-          });
-          handleCancel()
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      messageApi.open({
+        type: "success",
+        content: `Signup successful, Welcome ${result.user.email} `,
+      });
+      handleCancel();
     } catch (error) {
-        messageApi.open({
-            type: "error",
-            content: error.message,
-          });
-          return
+      messageApi.open({
+        type: "error",
+        content: error.message,
+      });
+      return;
     }
-}
+  };
 
-  const { setSignup, setLogin } = useCryptoContext();
+  const { setSignup, setLogin, setShowpassword, showpassword } =
+    useCryptoContext();
   const onChange = (key) => {
     console.log(key);
   };
@@ -57,17 +66,30 @@ const Signup = ({handleCancel}) => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <InputBox
-            type="text"
+            type={showpassword ? "text" : "password"}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <span
+            onClick={togglePassword}
+            className="absolute top-12 right-4 cursor-pointer"
+          >
+            {showpassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          </span>
           <InputBox
-            type="text"
+            type={showpassword ? "text" : "password"}
             placeholder="Confirm Password"
             value={confirmpassword}
             onChange={(e) => setConfirmPassowrd(e.target.value)}
           />
+          <span
+            onClick={togglePassword}
+            className="absolute top-12 right-4 cursor-pointer"
+          >
+            {showpassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+          </span>
+
           {contextHolder}
           <Button type="primary" onClick={handleClick}>
             SignUp
@@ -76,10 +98,6 @@ const Signup = ({handleCancel}) => {
       ),
     },
   ];
-
-  const handleSubmit = async () => {
-    // if (password !== confirmpassword)
-  };
 
   return (
     <div>
@@ -107,23 +125,18 @@ const Signup = ({handleCancel}) => {
           onChange={onChange}
           className="flex justify-center items-center"
         />
-        <div className="text-white flex">
-          <p>Already a User?</p> &nbsp;
+        <div className="text-white flex justify-center items-center py-2">
+          <p>Already a User?</p> &nbsp; &nbsp;
           <p
             onClick={() => {
               setSignup(!signup);
 
               setLogin(true);
             }}
-            className="text-yellow-700 cursor-pointer font-bold"
+            className="text-yellow-500 cursor-pointer font-bold"
           >
             Login
           </p>
-          {/* <Space>
-        <Button onClick={success}>Success</Button>
-        <Button onClick={error}>Error</Button>
-        <Button onClick={warning}>Warning</Button>
-      </Space> */}
         </div>
       </ConfigProvider>
     </div>

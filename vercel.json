@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/coins/:id",
+        "destination": "https://api.coingecko.com/api/v3/coins/:id"
+      }
+    ]
+  }
+  
