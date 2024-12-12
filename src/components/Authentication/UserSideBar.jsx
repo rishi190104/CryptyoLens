@@ -84,6 +84,7 @@ const UserSideBar = () => {
         closable={false}
         onClose={onClose}
         open={open}
+        className="md:w-full w-[300px]"
         key={placement}
         style={{ backgroundColor: "#212121", color: "#fff" }}
       >
@@ -142,7 +143,7 @@ const UserSideBar = () => {
           <div className="">
             {contextHolder}
             <button
-              className="absolute bottom-10 flex justify-center items-center hover:bg-yellow-500 w-[200px] ml-20 py-2 px-10 rounded-sm
+              className="absolute bottom-10 flex justify-center items-center hover:bg-yellow-500 md:w-[200px] md:ml-20 ml-10 py-2 px-10 rounded-sm
              hover:text-black text-lg font-bold bg-transparent text-yellow-500 border-2 border-yellow-500"
               onClick={handleClick}
             >

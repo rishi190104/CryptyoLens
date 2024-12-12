@@ -27,13 +27,15 @@ const AuthModal = () => {
 
   const googleprovider = new GoogleAuthProvider();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     signInWithPopup(auth, googleprovider)
+   
       .then((res) => {
         messageApi.open({
           type: "success",
           content: `Welcome ${res.user.email}`,
         });
+        
         handleCancel();
       })
       .catch((error) => {
