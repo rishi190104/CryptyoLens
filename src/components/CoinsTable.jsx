@@ -45,7 +45,7 @@ const CoinsTable = () => {
               setSearch(e.target.value);
             }}
             placeholder="Search For CryptoCurrency "
-            className=" w-[70%] h-12 mx-10 px-6 border border-yellow-700 bg-transparent outline-none placeholder:text-gray-600"
+            className=" w-[70%] h-12 mx-10 md:px-6 px-3 border border-yellow-700 bg-transparent outline-none placeholder:text-gray-600 "
           />
         </div>
         <div className=" flex justify-center items-center py-14 max-w-screen-xl mx-auto">
