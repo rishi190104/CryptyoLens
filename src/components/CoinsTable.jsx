@@ -59,9 +59,9 @@ const CoinsTable = () => {
                     <th className="flex items-start justify-start pl-20 py-5">
                       Coins
                     </th>
-                    <th className="pr-20">Price</th>
+                    <th className="md:pr-20">Price</th>
                     <th>24h Change</th>
-                    <th className="pr-20">Market Cap</th>
+                    <th className="md:pr-20">Market Cap</th>
                   </tr>
                 </thead>
                 <tbody>
